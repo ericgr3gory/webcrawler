@@ -31,7 +31,7 @@ def get_links(url):
     return parse_links(links)
 
 
-def main():
+def crawl():
     url = "https://docs.chia.net/introduction/"
     links = get_links(url)
     all_the_links = [links]
@@ -46,7 +46,7 @@ def main():
         flattened_list = [x for sub_links in all_the_links for x in sub_links]
         links = list(set(flattened_list))
         print(len(links))
-
+    return links
 
 if __name__ == "__main__":
-    main()
+    ...
