@@ -38,24 +38,23 @@ def flatten_list(all_the_links: list) -> list:
 
 
 def crawl(root_url: str, seed_link: str)->list:    
-    links = seed_link
-    all_the_links = []
-    all_the_links.extend(links)
-    visited_links = []
-    
-    while set(links) != set(visited_links):
+    links = set([seed_link])
+    all_the_links = set()
+    all_the_links.update(links)
+    visited_links = set()    
+    while links != visited_links:
         
         for link in links:
             
             if link not in visited_links:
-                visited_links.append(link)
-                print(visited_links)
+                visited_links.add(link)
                 page = parse_page(page_data=request_page(url=f'{root_url}{link}'))
                 new_links = parse_links(list_links=find_links(parsed_html_data=page))               
-                all_the_links.extend(new_links)
+            all_the_links.update(new_links)
     
-        links = list(set(all_the_links))#flatten_list(all_the_links=all_the_links)
+        links = all_the_links#flatten_list(all_the_links=all_the_links)
         print(len(links))
+        print(links)
     return links
 
 def main():
