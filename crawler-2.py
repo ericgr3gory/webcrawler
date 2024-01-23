@@ -24,10 +24,17 @@ def parse_links(list_links):
     return links_cleaned
 
 
-def get_links(url):
-    parsed_url_data = BeautifulSoup(request_page(url), 'html.parser')
-    links = find_links(parsed_url_data)
-    return parse_links(links)
+def parse_page(page_data):
+    parsed_url_data = BeautifulSoup(page_data, 'html.parser')
+    return parsed_url_data
+
+def flatten_list(all_the_links):
+    flattened = []
+    
+    for l in all_the_links:
+        flattened.extend(l)
+    
+    return list(set(flattened))
 
 
 def main():
