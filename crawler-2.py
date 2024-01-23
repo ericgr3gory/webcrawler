@@ -13,7 +13,6 @@ def find_links(parsed_html_data):
         links.append(a.get("href"))
     return links
 
-
 def parse_links(list_links):
     links_cleaned = []
     list_links = set(list_links)
@@ -25,27 +24,32 @@ def parse_links(list_links):
     return links_cleaned
 
 
-def get_links(url):
-    parsed_url_data = BeautifulSoup(request_page(url), 'html.parser')
-    links = find_links(parsed_url_data)
-    return parse_links(links)
+def parse_page(page_data):
+    parsed_url_data = BeautifulSoup(page_data, 'html.parser')
+    return parsed_url_data
 
 
 def main():
-    url = "https://docs.chia.net/introduction/"
-    links = get_links(url)
+    root_url = 'https://docs.chia.net'
+    links = "/"
     all_the_links = [links]
     visited_links = []
-    for _ in range(6):
+    while set(links) != set(visited_links):
         for link in links:
             if link not in visited_links:
                 visited_links.append(link)
-                new_links = get_links(f'https://docs.chia.net{link}')
+                page = request_page(f'{root_url}{link}')
+                page = parse_page(page)
+                new_links = find_links(page)
+                new_links = parse_links(new_links)               
                 all_the_links.append(new_links)
-
+    
+        print(links)
+        print(len(links))
         flattened_list = [x for sub_links in all_the_links for x in sub_links]
         links = list(set(flattened_list))
-        print(len(links))
+
+    
 
 
 if __name__ == "__main__":
