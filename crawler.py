@@ -16,8 +16,8 @@ def find_links(parsed_html_data: object) -> set:
 
 def parse_links(list_links: set) -> set:
     links_cleaned = set()
-    # list_links = set(list_links)
     for link in list_links:
+
         if '#' in link or 'zh-Hans' in link or 'email' in link:
             continue
         if link.startswith('/') and len(link) > 1:
@@ -30,7 +30,7 @@ def parse_page(page_data: str) -> object:
     return parsed_url_data
 
 
-def crawl(root_url: str, seed_link: str) -> set:
+def crawl(root_url: str = 'https://docs.chia.net', seed_link: str = '/') -> set:
     links = {seed_link}
     all_the_links = set()
     all_the_links.update(links)
@@ -51,8 +51,6 @@ def crawl(root_url: str, seed_link: str) -> set:
 def main():
     root_url = 'https://docs.chia.net'
     seed_link = "/"
-    c = crawl(root_url=root_url, seed_link=seed_link)
-    print(len(c))
 
 
 if __name__ == "__main__":

@@ -4,17 +4,17 @@ import crawler
 import pdfkit
 
 
-def getdata(url):
+def getdata(url: str) -> str:
     r = requests.get(url)
     return r.text
 
 
-def write_data(file, data):
+def write_data(file: str, data: str):
     with open(file, 'w') as f:
         f.write(data)
 
 
-def make_file_name(link):
+def make_file_name(link: str) -> str:
     file_name = link[1:-1]
     file_name = file_name.split('/')
     return '-'.join(file_name)
