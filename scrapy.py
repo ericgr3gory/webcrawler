@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import crawler
+import pdfkit
 
 
 def getdata(url):
@@ -23,14 +24,15 @@ def main():
     links = crawler.crawl()
     for link in links:
         page = f"https://docs.chia.net{link}"
-        page = BeautifulSoup(getdata(page), 'html.parser')
-        data = page.find_all("article")
-        file = make_file_name(link)
-        print(file)
-        try:
-            write_data(f'chia-docs/{file}', data[0].get_text())
-        except IndexError as e:
-            print(e)
+        page_soup = BeautifulSoup(getdata(page), 'html.parser')
+        if data := page_soup.find_all("article"):
+            file = make_file_name(link)
+            print(file)
+            pdfkit.from_url(page, f'chia-docs-pdfs/{file}')
+            try:
+                write_data(f'chia-docs/{file}', data[0].get_text())
+            except IndexError as e:
+                print(e)
 
 
 if __name__ == "__main__":
