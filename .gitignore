@@ -1,4 +1,5 @@
 
-chia-docs-pdfs\
+chia-docs-pdfs
 .venv
-chia-docs\
+chia-docs
+__pycache__
