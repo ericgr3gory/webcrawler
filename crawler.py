@@ -51,6 +51,7 @@ def crawl(root_url: str = 'https://docs.chia.net', seed_link: str = '/') -> set:
 def main():
     root_url = 'https://docs.chia.net'
     seed_link = "/"
+    crawl()
 
 
 if __name__ == "__main__":
