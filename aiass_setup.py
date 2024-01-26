@@ -9,12 +9,12 @@ OPEN_AI_API_KEY = os.getenv("OPEN_AI_API_KEY")
 ASSITANT_ID = os.getenv("ASSITANT_ID")
 client = OpenAI(api_key=OPEN_AI_API_KEY)
 
-
+print(ASSITANT_ID)
 # --------------------------------------------------------------
 # Upload file
 # --------------------------------------------------------------
 def upload_file(path):
-    files = ['wallet-cli']
+    files = ['combined.pdf']
     # Upload a file with an "assistants" purpose
     for file in files:
         client.files.create(file=open(f'{path}{file}', "rb"), purpose="assistants")
@@ -38,7 +38,7 @@ def retrieve_files():
     
     return file_ids
      
-#file = upload_file("chia-docs/")
+#file = upload_file("chia-docs-pdfs/")
 
 
 
@@ -57,3 +57,13 @@ def create_assistant(file):
         file_ids=file,
     )
     return assistant
+
+def update_asst():
+    my_updated_assistant = client.beta.assistants.update(
+    ASSITANT_ID,
+    file_ids=["file-PXH1u8sWfxNXoiTG4fgfFVey"],
+    )
+
+    print(my_updated_assistant)
+
+update_asst()

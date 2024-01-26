@@ -65,7 +65,7 @@ def run_assistant(thread):
         time.sleep(0.5)
         run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
 
-    # Retrieve the Messages
+    
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     new_message = messages.data[0].content[0].text.value
     return new_message
@@ -74,5 +74,11 @@ def run_assistant(thread):
 
 
 def main():
-    new_message = generate_response("describe proof of space and time", "101", "eric")
     
+    while True:
+        question = input('question? ')
+        generate_response(question, "101", "eric")
+    
+    
+if __name__ == "__main__":
+    main()
