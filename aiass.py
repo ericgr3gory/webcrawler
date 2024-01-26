@@ -13,12 +13,32 @@ client = OpenAI(api_key=OPEN_AI_API_KEY)
 # Upload file
 # --------------------------------------------------------------
 def upload_file(path):
+    files = ['wallet-cli']
     # Upload a file with an "assistants" purpose
-    file = client.files.create(file=open(path, "rb"), purpose="assistants")
-    return file
+    for file in files:
+        client.files.create(file=open(f'{path}{file}', "rb"), purpose="assistants")
+        print(f'{path}{file}')
+        time.sleep(3)
+    return files
 
+def delete_files():
+    file_list = client.files.list()
+    
+    for file in file_list:
+        print(file.id)
+        client.files.delete(file.id)
+        time.sleep(2)
+    
+def retrieve_files():
+    file_list = client.files.list()
+    file_ids =[]
+    for file in file_list:
+        file_ids.append(file.id)
+    
+    return file_ids
+     
+#file = upload_file("chia-docs/")
 
-file = upload_file("../data/airbnb-faq.pdf")
 
 
 # --------------------------------------------------------------
@@ -29,16 +49,14 @@ def create_assistant(file):
     You currently cannot set the temperature for Assistant via the API.
     """
     assistant = client.beta.assistants.create(
-        name="WhatsApp AirBnb Assistant",
-        instructions="You're a helpful WhatsApp assistant that can assist guests that are staying in our Paris AirBnb. Use your knowledge base to best respond to customer queries. If you don't know the answer, say simply that you cannot help with question and advice to contact the host directly. Be friendly and funny.",
+        name="chia blockchain assitant",
+        instructions="You're a helpful chia blockchain assistant that can provide useful information. Use your knowledge base to best respond to queries. If you don't know the answer, say simply that you cannot help with question and advise user to visit chia.net Be friendly and funny.",
         tools=[{"type": "retrieval"}],
         model="gpt-4-1106-preview",
-        file_ids=[file.id],
+        file_ids=file,
     )
     return assistant
 
-
-assistant = create_assistant(file)
 
 
 # --------------------------------------------------------------
@@ -91,7 +109,7 @@ def generate_response(message_body, wa_id, name):
 # --------------------------------------------------------------
 def run_assistant(thread):
     # Retrieve the Assistant
-    assistant = client.beta.assistants.retrieve("asst_7Wx2nQwoPWSf710jrdWTDlfE")
+    assistant = client.beta.assistants.retrieve("asst_f6NpIVl7Gc2X1p77fKEckYAp")
 
     # Run the assistant
     run = client.beta.threads.runs.create(
@@ -116,10 +134,4 @@ def run_assistant(thread):
 # Test assistant
 # --------------------------------------------------------------
 
-new_message = generate_response("What's the check in time?", "123", "John")
-
-new_message = generate_response("What's the pin for the lockbox?", "456", "Sarah")
-
-new_message = generate_response("What was my previous question?", "123", "John")
-
-new_message = generate_response("What was my previous question?", "456", "Sarah")
+new_message = generate_response("how do i install bitcoin blockchain", "101", "eric")

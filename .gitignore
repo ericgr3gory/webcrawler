@@ -3,3 +3,5 @@ chia-docs-pdfs
 .venv
 chia-docs
 __pycache__
+.env
+threads_db
