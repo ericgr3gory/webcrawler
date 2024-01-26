@@ -21,9 +21,10 @@ def parse_links(list_links: set) -> set:
         if link is None:
             continue
         if 'zh-Hans' in link:
-                continue
+            continue
         if link.startswith('http') and 'chia' in link:
-                links_cleaned.add(link)
+            print(link)
+            links_cleaned.add(link)
     return links_cleaned
 
 
@@ -49,7 +50,7 @@ def crawl(root_url: str = 'https://docs.chia.net', seed_link: str = '/') -> set:
                 new_links = parse_links(list_links=find_links(parsed_html_data=page))
                 all_the_links.update(new_links)
                 links = all_the_links
-                print(f'{link}')
+                
     return links
 
 
