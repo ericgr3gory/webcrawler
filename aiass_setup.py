@@ -14,7 +14,7 @@ print(ASSITANT_ID)
 # Upload file
 # --------------------------------------------------------------
 def upload_file(path):
-    files = ['combined.pdf']
+    files = ['smashed.html']
     # Upload a file with an "assistants" purpose
     for file in files:
         client.files.create(file=open(f'{path}{file}', "rb"), purpose="assistants")
@@ -38,7 +38,9 @@ def retrieve_files():
     
     return file_ids
      
-#file = upload_file("chia-docs-pdfs/")
+upload_file("chia-docs/")
+file = retrieve_files()
+
 
 
 
@@ -53,17 +55,19 @@ def create_assistant(file):
         name="chia blockchain assitant",
         instructions="You're a helpful chia blockchain assistant that can provide useful information. Use your knowledge base to best respond to queries. If you don't know the answer, say simply that you cannot help with question and advise user to visit chia.net Be friendly and funny.",
         tools=[{"type": "retrieval"}],
-        model="gpt-4-1106-preview",
+        model="gpt-3.5-turbo-1106",
         file_ids=file,
     )
     return assistant
 
-def update_asst():
+def update_asst(file):
     my_updated_assistant = client.beta.assistants.update(
     ASSITANT_ID,
-    file_ids=["file-PXH1u8sWfxNXoiTG4fgfFVey"],
+    file_ids=file,
     )
 
     print(my_updated_assistant)
 
-update_asst()
+update_asst(file)
+
+
